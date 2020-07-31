@@ -1,0 +1,6 @@
+data/
+.ipynb_checkpoints/
+htmls/
+pdfs/
+data/
+wkhtmltopdf.exe
