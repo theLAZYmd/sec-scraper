@@ -4,3 +4,6 @@ htmls/
 pdfs/
 data/
 wkhtmltopdf.exe
+*.html
+*.xlsx
+*.pyc
