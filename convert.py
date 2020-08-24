@@ -1,27 +1,32 @@
 import os
+from glob import glob
 import pdfkit
+from decimal import Decimal
 from pathlib import Path
 
-# You need to add the wkhtmltopdf.exe executable to your path variables
-# Run: setx PATH "%PATH%;C:\Program Files\wkhtmltopdf\bin" or wherever your executable is installed to add to path
-# Alternatively, if you're running from this folder, setx PATH "%PATH%;./"
+# You need to have the wkhtmltopdf.exe executable in this folder.
+# Alternatively, add it to your PATH variables and comment out the config = line
 
-fromdir = './htmls/InterDigital/'
-outdir = './pdfs/InterDigital/'
+fromdir = './htmls/'
+outdir = './pdfs/'
 
 Path(outdir).mkdir(parents=True, exist_ok=True)
 
 config = pdfkit.configuration(wkhtmltopdf='./wkhtmltopdf.exe')
 
-for f in os.listdir(fromdir):
-	if f.endswith('.html'):
-		try:
-			pdfkit.from_file(
-				fromdir + f,
-				outdir + f.replace('.html', '.pdf'),
-				options = { 'enable-local-file-access': None },
-				configuration = config
-			)
-		except Exception as e:
-			print(e)
-		print('Converted: ', f)
+queue = [y for x in os.walk(fromdir) for y in glob(os.path.join(x[0], '*.html'))]
+
+for i, f in enumerate(queue):
+	f = f.replace('\\', '/')
+	fDir = '/'.join(f.split('/')[:-1]).replace(fromdir, outdir) + '/'
+	os.makedirs(fDir, exist_ok=True)
+	try:
+		pdfkit.from_file(
+			f,
+			f.replace(fromdir, outdir).replace('.html', '.pdf'),
+			options = { 'enable-local-file-access': None },
+			configuration = config
+		)
+	except Exception as e:
+		print(e)
+	print('Completed: {}%. Converted: {}'.format(int(i / len(queue) * 100), f))
