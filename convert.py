@@ -6,8 +6,8 @@ from pathlib import Path
 # Run: setx PATH "%PATH%;C:\Program Files\wkhtmltopdf\bin" or wherever your executable is installed to add to path
 # Alternatively, if you're running from this folder, setx PATH "%PATH%;./"
 
-fromdir = './htmls/JA Solar/'
-outdir = './pdfs/JA Solar/'
+fromdir = './htmls/InterDigital/'
+outdir = './pdfs/InterDigital/'
 
 Path(outdir).mkdir(parents=True, exist_ok=True)
 
